@@ -1,0 +1,74 @@
+---
+title: "Neurodevelopmental Disorders Genes"
+
+author:
+- name: Data analysis for this paper were carried out by Emanuele Villa (carloemanuele.villa@outlook.com) and Cristina Cheroni (cristina.cheroni@ieo.it)
+
+date: 'Date: `r format(Sys.Date(), "%B %d, %Y")`'
+output:
+    html_document:
+        #toc: true
+        #toc_float: true
+        theme: 'simplex'
+        highlight: 'espresso'
+        #code_folding: hide
+---
+
+
+To go back to the main page go [here](../../NDD.html)
+
+You can find the original paper at
+
+## Data preparation
+From the differential expression analysis (performed using Seurat, test method: MAST), I create a list with the significant upregulated genes for each cluster
+
+```{r}
+Cluster0 <- read.table(paste0("Cluster_0.txt"), sep = "\t",header = T)
+Cluster0 <- as.character(Cluster0$Gene[which(Cluster0$p_val_adj<0.05 & Cluster0$avg_logFC>log2(1))])
+Cluster1 <- read.table(paste0("Cluster_1.txt"), sep = "\t",header = T)
+Cluster1 <- as.character(Cluster1$Gene[which(Cluster1$p_val_adj<0.05 & Cluster1$avg_logFC>log2(1))])
+Cluster2 <- read.table(paste0("Cluster_2.txt"), sep = "\t",header = T)
+Cluster2 <- as.character(Cluster2$Gene[which(Cluster2$p_val_adj<0.05 & Cluster2$avg_logFC>log2(1))])
+Cluster3 <- read.table(paste0("Cluster_3.txt"), sep = "\t",header = T)
+Cluster3 <- as.character(Cluster3$Gene[which(Cluster3$p_val_adj<0.05 & Cluster3$avg_logFC>log2(1))])
+Cluster4 <- read.table(paste0("Cluster_4.txt"), sep = "\t",header = T)
+Cluster4 <- as.character(Cluster4$Gene[which(Cluster4$p_val_adj<0.05 & Cluster4$avg_logFC>log2(1))])
+Cluster5 <- read.table(paste0("Cluster_5.txt"), sep = "\t",header = T)
+Cluster5 <- as.character(Cluster5$Gene[which(Cluster5$p_val_adj<0.05 & Cluster5$avg_logFC>log2(1))])
+Cluster6 <- read.table(paste0("Cluster_6.txt"), sep = "\t",header = T)
+Cluster6 <- as.character(Cluster6$Gene[which(Cluster6$p_val_adj<0.05 & Cluster6$avg_logFC>log2(1))])
+Cluster7 <- read.table(paste0("Cluster_7.txt"), sep = "\t",header = T)
+Cluster7 <- as.character(Cluster7$Gene[which(Cluster7$p_val_adj<0.05 & Cluster7$avg_logFC>log2(1))])
+Cluster8 <- read.table(paste0("Cluster_8.txt"), sep = "\t",header = T)
+Cluster8 <- as.character(Cluster8$Gene[which(Cluster8$p_val_adj<0.05 & Cluster8$avg_logFC>log2(1))])
+Cluster9 <- read.table(paste0("Cluster_9.txt"), sep = "\t",header = T)
+Cluster9 <- as.character(Cluster9$Gene[which(Cluster9$p_val_adj<0.05 & Cluster9$avg_logFC>log2(1))])
+Cluster10 <- read.table(paste0("Cluster_10.txt"), sep = "\t",header = T)
+Cluster10 <- as.character(Cluster10$Gene[which(Cluster10$p_val_adj<0.05 & Cluster10$avg_logFC>log2(1))])
+Cluster11 <- read.table(paste0("Cluster_11.txt"), sep = "\t",header = T)
+Cluster11 <- as.character(Cluster11$Gene[which(Cluster11$p_val_adj<0.05 & Cluster11$avg_logFC>log2(1))])
+Cluster12 <- read.table(paste0("Cluster_12.txt"), sep = "\t",header = T)
+Cluster12 <- as.character(Cluster12$Gene[which(Cluster12$p_val_adj<0.05 & Cluster12$avg_logFC>log2(1))])
+Cluster13 <- read.table(paste0("Cluster_13.txt"), sep = "\t",header = T)
+Cluster13 <- as.character(Cluster13$Gene[which(Cluster13$p_val_adj<0.05 & Cluster13$avg_logFC>log2(1))])
+Cluster14 <- read.table(paste0("Cluster_14.txt"), sep = "\t",header = T)
+Cluster14 <- as.character(Cluster14$Gene[which(Cluster14$p_val_adj<0.05 & Cluster14$avg_logFC>log2(1))])
+
+
+ClusterInternal <- list(Cluster0=Cluster0,Cluster1=Cluster1,Cluster2=Cluster2,Cluster3=Cluster3,Cluster4=Cluster4,Cluster5=Cluster5,Cluster6=Cluster6,Cluster7=Cluster7,Cluster8=Cluster8,Cluster9=Cluster9,Cluster10=Cluster10,Cluster11=Cluster11,Cluster12=Cluster12,Cluster13=Cluster13,Cluster14=Cluster14)
+```
+
+## Cluster selection
+Here I assemble different clusters into relevant neurodevelopmental cell populations 
+
+```{r}
+ClusterInternalArea <- list()
+ClusterInternalArea$RadialGlia <- union(ClusterInternal$Cluster8, union(ClusterInternal$Cluster13,ClusterInternal$Cluster14))
+ClusterInternalArea$IPC <- union(ClusterInternal$Cluster2, union(ClusterInternal$Cluster7,ClusterInternal$Cluster12))
+ClusterInternalArea$OuterRadialGlia <- ClusterInternal$Cluster4
+ClusterInternalArea$Choroid <- ClusterInternal$Cluster11
+ClusterInternalArea$EarlyNeurons <-  union(ClusterInternal$Cluster5,ClusterInternal$Cluster10)
+ClusterInternalArea$Neurons <-  union(ClusterInternal$Cluster1,ClusterInternal$Cluster0)
+
+save(ClusterInternal, ClusterInternalArea, file = "../../Data/Organoids.RData")
+```

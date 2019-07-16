@@ -1,0 +1,247 @@
+---
+date: 'Date: `r format(Sys.Date(), "%B %d, %Y")`'
+output:
+    html_document:
+        toc: true
+        toc_float: true
+        theme: 'simplex'
+        highlight: 'espresso'
+        #code_folding: hide
+---
+
+
+To go back to the main page go [here](../../NDD.html)
+
+
+## Data preparation
+
+From the WGCNA analysis of single cell clusters for human fetal brains (paper by Nowakowski et al, DOI: 10.1126/science.aap8809), I downloaded the data from the web portal at https://cells.ucsc.edu/?ds=cortex-dev and here I create a list with the upregulated genes for each cluster
+
+```{r, warning=FALSE}
+ClusterNowakowskiAll <- list()
+
+#ProliferatingIPC
+a<- read.table("IPCdiv1.tsv",sep = "\t",header = T,fill = T)
+b<- read.table("IPCdiv2.tsv",sep = "\t",header = T,fill = T)
+z<- rbind(a,b)
+z <- z[which(z$avg_diff.float>1.5),]
+y<- unique(as.character(z$id))
+ClusterNowakowskiAll$ProliferatingProgenitors<- y
+
+#RadialGlia
+a<- read.table("RGdiv1.tsv",sep = "\t",header = T,fill = T)
+b<- read.table("RGdiv2.tsv",sep = "\t",header = T,fill = T)
+c<- read.table("RGearly.tsv",sep = "\t",header = T,fill = T)
+z<- rbind(a,b,c)
+z <- z[which(z$avg_diff.float>1.5),]
+y<- unique(as.character(z$id))
+ClusterNowakowskiAll$RadialGlia <- y
+
+#TruncatedRadialGlia
+a<- read.table("tRG.tsv",sep = "\t",header = T,fill = T)
+a <- a[which(a$avg_diff.float>1.5),]
+y<- unique(as.character(a$id))
+ClusterNowakowskiAll$TruncatedRadialGlia <- y
+
+#VentralRadialGlia
+a<- read.table("vRG.tsv",sep = "\t",header = T,fill = T)
+a <- a[which(a$avg_diff.float>1.5),]
+y<- unique(as.character(a$id))
+ClusterNowakowskiAll$VentralRadialGlia <- y
+
+#OuterRadialGLia
+a<- read.table("oRG.tsv",sep = "\t",header = T,fill = T)
+a <- a[which(a$avg_diff.float>1.5),]
+y<- unique(as.character(a$id))
+ClusterNowakowskiAll$OuterRadialGlia <- y
+
+#IntermediateProgenitors
+a<- read.table("IPCnEN1.tsv",sep = "\t",header = T,fill = T)
+b<- read.table("IPCnEN2.tsv",sep = "\t",header = T,fill = T)
+c<- read.table("IPCnEN3.tsv",sep = "\t",header = T,fill = T)
+z<- rbind(a,b,c)
+z <- z[which(z$avg_diff.float>1.5),]
+y<- unique(as.character(z$id))
+ClusterNowakowskiAll$IntermediateProgenitors <- y
+
+#EarlyNeurons
+a<- read.table("nENearly1.tsv",sep = "\t",header = T,fill = T)
+b<- read.table("nENearly2.tsv",sep = "\t",header = T,fill = T)
+c<- read.table("nENlate.tsv",sep = "\t",header = T,fill = T)
+z<- rbind(a,b,c)
+z <- z[which(z$avg_diff.float>1.5),]
+y<- unique(as.character(z$id))
+ClusterNowakowskiAll$EarlyNeurons <- y
+
+#MatureVisualCortex
+a<- read.table("ENV11.tsv",sep = "\t",header = T,fill = T)
+b<- read.table("ENV12.tsv",sep = "\t",header = T,fill = T)
+c<- read.table("ENV13.tsv",sep = "\t",header = T,fill = T)
+z<- rbind(a,b,c)
+z <- z[which(z$avg_diff.float>1.5),]
+y<- unique(as.character(z$id))
+ClusterNowakowskiAll$MatureVisualCortex <- y
+
+#MaturePrimaryCortex
+a<- read.table("ENPFC1.tsv",sep = "\t",header = T,fill = T)
+b<- read.table("ENPFC2.tsv",sep = "\t",header = T,fill = T)
+c<- read.table("ENPFC3.tsv",sep = "\t",header = T,fill = T)
+z<- rbind(a,b,c)
+z <- z[which(z$avg_diff.float>1.5),]
+y<- unique(as.character(z$id))
+ClusterNowakowskiAll$MaturePrimaryCortex <- y
+
+#GanglionicEminence
+a<- read.table("MGEIPC1.tsv",sep = "\t",header = T,fill = T)
+b<- read.table("MGEIPC2.tsv",sep = "\t",header = T,fill = T)
+c<- read.table("MGEIPC3.tsv",sep = "\t",header = T,fill = T)
+d<- read.table("MGERG2.tsv",sep = "\t",header = T,fill = T)
+z<- rbind(a,b,c,d)
+z <- z[which(z$avg_diff.float>1.5),]
+y<- unique(as.character(z$id))
+ClusterNowakowskiAll$GanglionicEminence <- y
+
+#EarlyInterneurons
+a<- read.table("nIN1.tsv",sep = "\t",header = T,fill = T)
+b<- read.table("nIN2.tsv",sep = "\t",header = T,fill = T)
+c<- read.table("nIN3.tsv",sep = "\t",header = T,fill = T)
+d<- read.table("nIN4.tsv",sep = "\t",header = T,fill = T)
+z<- rbind(a,b,c,d)
+z <- z[which(z$avg_diff.float>1.5),]
+y<- unique(as.character(z$id))
+ClusterNowakowskiAll$EarlyInterneurons <- y
+
+#MatureInterneurons
+a<- read.table("INCTXCGE1.tsv",sep = "\t",header = T,fill = T)
+b<- read.table("INCTXCGE2.tsv",sep = "\t",header = T,fill = T)
+c<- read.table("INCTXMGE1.tsv",sep = "\t",header = T,fill = T)
+d<- read.table("INCTXMGE2.tsv",sep = "\t",header = T,fill = T)
+z<- rbind(a,b,c,d)
+z <- z[which(z$avg_diff.float>1.5),]
+y<- unique(as.character(z$id))
+ClusterNowakowskiAll$MatureInterneurons <- y
+
+#Striatum
+a<- read.table("INSTR.tsv",sep = "\t",header = T,fill = T)
+a <- a[which(a$avg_diff.float>1.5),]
+y<- unique(as.character(a$id))
+ClusterNowakowskiAll$Striatum <- y
+
+#Astrocyte
+a<- read.table("Astrocyte.tsv",sep = "\t",header = T,fill = T)
+a <- a[which(a$avg_diff.float>1.5),]
+y<- unique(as.character(a$id))
+ClusterNowakowskiAll$Astrocyte <- y
+
+#OligodendrocyteProgenitors
+a<- read.table("OPC.tsv",sep = "\t",header = T,fill = T)
+a <- a[which(a$avg_diff.float>1.5),]
+y<- unique(as.character(a$id))
+ClusterNowakowskiAll$OligodendrocyteProgenitors <- y
+
+#Microglia
+a<- read.table("Microglia.tsv",sep = "\t",header = T,fill = T)
+a <- a[which(a$avg_diff.float>1.5),]
+y<- unique(as.character(a$id))
+ClusterNowakowskiAll$Microglia <- y
+
+#Choroid
+a<- read.table("Choroid.tsv",sep = "\t",header = T,fill = T)
+a <- a[which(a$avg_diff.float>1.5),]
+y<- unique(as.character(a$id))
+ClusterNowakowskiAll$Choroid <- y
+```
+
+## Cluster selection
+Here I only select the clusters that are more relevant for dorsal-patterned cortical brain organoids
+```{r, warning=FALSE}
+ClusterNowakowskiSelected<- list()
+
+#ProliferatingIPC
+a<- read.table("IPCdiv1.tsv",sep = "\t",header = T,fill = T)
+b<- read.table("IPCdiv2.tsv",sep = "\t",header = T,fill = T)
+z<- rbind(a,b)
+z <- z[which(z$avg_diff.float>1.5),]
+y<- unique(as.character(z$id))
+ClusterNowakowskiSelected$ProliferatingProgenitors<- y
+
+#RadialGlia
+a<- read.table("RGdiv1.tsv",sep = "\t",header = T,fill = T)
+b<- read.table("RGdiv2.tsv",sep = "\t",header = T,fill = T)
+c<- read.table("RGearly.tsv",sep = "\t",header = T,fill = T)
+z<- rbind(a,b,c)
+z <- z[which(z$avg_diff.float>1.5),]
+y<- unique(as.character(z$id))
+ClusterNowakowskiSelected$RadialGlia <- y
+
+#TruncatedRadialGlia
+a<- read.table("tRG.tsv",sep = "\t",header = T,fill = T)
+a <- a[which(a$avg_diff.float>1.5),]
+y<- unique(as.character(a$id))
+ClusterNowakowskiSelected$TruncatedRadialGlia <- y
+
+#VentralRadialGlia
+a<- read.table("vRG.tsv",sep = "\t",header = T,fill = T)
+a <- a[which(a$avg_diff.float>1.5),]
+y<- unique(as.character(a$id))
+ClusterNowakowskiSelected$VentralRadialGlia <- y
+
+#OuterRadialGLia
+a<- read.table("oRG.tsv",sep = "\t",header = T,fill = T)
+a <- a[which(a$avg_diff.float>1.5),]
+y<- unique(as.character(a$id))
+ClusterNowakowskiSelected$OuterRadialGlia <- y
+
+#IntermediateProgenitors
+a<- read.table("IPCnEN1.tsv",sep = "\t",header = T,fill = T)
+b<- read.table("IPCnEN2.tsv",sep = "\t",header = T,fill = T)
+c<- read.table("IPCnEN3.tsv",sep = "\t",header = T,fill = T)
+z<- rbind(a,b,c)
+z <- z[which(z$avg_diff.float>1.5),]
+y<- unique(as.character(z$id))
+ClusterNowakowskiSelected$IntermediateProgenitors <- y
+
+#EarlyNeurons
+a<- read.table("nENearly1.tsv",sep = "\t",header = T,fill = T)
+b<- read.table("nENearly2.tsv",sep = "\t",header = T,fill = T)
+c<- read.table("nENlate.tsv",sep = "\t",header = T,fill = T)
+z<- rbind(a,b,c)
+z <- z[which(z$avg_diff.float>1.5),]
+y<- unique(as.character(z$id))
+ClusterNowakowskiSelected$EarlyNeurons <- y
+
+#MatureVisualCortex
+a<- read.table("ENV11.tsv",sep = "\t",header = T,fill = T)
+b<- read.table("ENV12.tsv",sep = "\t",header = T,fill = T)
+c<- read.table("ENV13.tsv",sep = "\t",header = T,fill = T)
+z<- rbind(a,b,c)
+z <- z[which(z$avg_diff.float>1.5),]
+y<- unique(as.character(z$id))
+ClusterNowakowskiSelected$MatureVisualCortex <- y
+
+#MaturePrimaryCortex
+a<- read.table("ENPFC1.tsv",sep = "\t",header = T,fill = T)
+b<- read.table("ENPFC2.tsv",sep = "\t",header = T,fill = T)
+c<- read.table("ENPFC3.tsv",sep = "\t",header = T,fill = T)
+z<- rbind(a,b,c)
+z <- z[which(z$avg_diff.float>1.5),]
+y<- unique(as.character(z$id))
+ClusterNowakowskiSelected$MaturePrimaryCortex <- y
+
+#Astrocyte
+a<- read.table("Astrocyte.tsv",sep = "\t",header = T,fill = T)
+a <- a[which(a$avg_diff.float>1.5),]
+y<- unique(as.character(a$id))
+ClusterNowakowskiSelected$Astrocyte <- y
+
+#Choroid
+a<- read.table("Choroid.tsv",sep = "\t",header = T,fill = T)
+a <- a[which(a$avg_diff.float>1.5),]
+y<- unique(as.character(a$id))
+ClusterNowakowskiSelected$Choroid <- y
+
+save(ClusterNowakowskiAll, ClusterNowakowskiSelected, file = "../../Data/Nowakowski_et_al.RData")
+```
+
+
+
