@@ -26,6 +26,7 @@ SFARIgenes$score3 <- as.character(SFARI$gene.symbol[which(SFARI$gene.score==3)])
 SFARIgenes$score4 <- as.character(SFARI$gene.symbol[which(SFARI$gene.score==4)])
 SFARIgenes$score5 <- as.character(SFARI$gene.symbol[which(SFARI$gene.score==5)])
 SFARIgenes$score6 <- as.character(SFARI$gene.symbol[which(SFARI$gene.score==6)])
+SFARIgenesAll<- unlist(SFARIgenes)
 ```
 
 AutismKB genes were downloaded from http://db.cbi.pku.edu.cn/autismkb_v2/index.php
@@ -88,7 +89,7 @@ GDI <- read.table("GDI_full_10282015.txt", header = T, sep = "\t")
 
 I then save all the objects
 ```{r}
-ASD <- list(SFARI=SFARIgenes, AutismKB=AutismKBgenes, DDD=DDDneurogenes, MSSNG=MSSNGgenes, ASDsevere=ASDsevereGenes, ID=IDGenes, OMIM= NeuroOmimGenes)
-save(ASD, SFARI, AutismKB, DDDneuro, MSSNG, ASDsevere, ID, NeuroOmim, GDI, file = "../../Data/ASD.RData")
+ASD <- list(SFARI=SFARIgenesAll, AutismKB=AutismKBgenes, DDD=DDDneurogenes, MSSNG=MSSNGgenes, ASDsevere=ASDsevereGenes, ID=IDGenes, OMIM= NeuroOmimGenes)
+save(ASD, SFARI, SFARIgenes, AutismKB, DDDneuro, MSSNG, ASDsevere, ID, NeuroOmim, GDI, file = "../../Data/ASD.RData")
 ```
 

@@ -2,8 +2,8 @@
 title: "Neurodevelopmental Disorders Genes"
 
 author:
-- name: Author Nicolò Caporale (nicolo.caporale@gmail.com)
-- name: Note the multintersect function was written by Pierre-Luc Germain (pl.germain@gmail.com)
+- name: Author Nicolò Caporale (nicolo.caporale@gmail.com), Giuseppe Testa lab http://www.testalab.eu/ 
+- name: the multintersect and sehm function were written by Pierre-Luc Germain (pl.germain@gmail.com)
 
 date: 'Date: `r format(Sys.Date(), "%B %d, %Y")`'
 output:
@@ -15,7 +15,7 @@ output:
         #code_folding: hide
 ---
 
-If you have 1 or more lists of genes and you want to know how relevant they are in the context of neurodevelopment and autism, here you can find a very simple pipeline that can help you.
+If you have 1 or more lists of genes and you want to know how relevant they are in the context of neurodevelopmental disorders (NDD), here you can find a very simple pipeline that could help you.
 
 This is a very simple analysis but it is **standing on the shoulders of giants**, as you can see from the references. Most of this work, indeed, is based on literature search, past experience with public dataset mining, manual selection and curation of the most relevant studies dealing with the genetics of neurodevelopmental disorders. It is by definition not comprehensive and it will need constant curation to be kept updated: so I ask you to contact me for constructive comments and suggestion to improve it..
 
@@ -28,34 +28,111 @@ load("Data/Nowakowski_et_al.RData")
 load("Data/Organoids.RData")
 load("Data/universe.RData")
 load("Data/ASD.RData")
+library(SummarizedExperiment)
 ```
 
 
-## Overlaps with ASD genes
+### Overlaps with NDD genes
 
-I take 2 gene lists of my interest and intersect them with all the relevant ASD genes. As an example I take here the genes that define cell populations of different neural differentiation stages, from a single cell analysis of cortical brain organoids that we did in our lab. 
+You can take whatever lists of genes of your interest and intersect them with all the relevant NDD genes I assembled:
+***
+
+SFARI is ..
+AutismKB is..
+DDD is ..
+MSSNG is..
+ASD severe 
+ID
+OMIM
+
+***
+
+The only thing you need to start is 1 or more lists of genes organised in a R-object of class "list".
+
+***
+
+As an example I take here the genes that define cell populations of different neural differentiation stages, from a single cell analysis of cortical brain organoids that we did in the lab. 
 https://www.biorxiv.org/content/10.1101/484741v2
 
 ```{r,warning=FALSE,message=FALSE,fig.height=7,fig.width=8}
 multintersect(ClusterInternalArea, ASD, universe = universe)
-
 ```
 
-## Expression of ASD relevant genes
+You can then check which are the specific genes from the overlap of your interest.
 
-As an example I plot ASD relevant genes across organoid samples that were exposed to different treatments
+***
+
+As an exemple here I check which of the genes defining the neuronal population are also in the list of SFARI genes.
+I also check which of the genes defining the choroid population are also in the list of OMIM genes.
+
 ```{r,warning=FALSE,message=FALSE,fig.height=7,fig.width=8}
-load("Data/treatment.RData")
+intersect(ASD$SFARI, ClusterInternalArea$Neurons)
+intersect(ASD$OMIM, ClusterInternalArea$Choroid)
+```
 
-byheatmap
+### Overlaps with SFARI genes
+
+As a next step you can intersect your lists with the SFARI genes stratified for the strenght of association with autism.
+
+```{r,warning=FALSE,message=FALSE,fig.height=7,fig.width=8}
+multintersect(ClusterInternalArea, SFARIgenes, universe = universe)
+```
+
+### Overlap with neurodevelopmental cell populations
+
+Since you are working with neurodevelopmental genes, you might be interested in checking the overlap of your genes with the ones that define the developmental population in the reference dataset of fetal brain single cells profiles.
+
+
+```{r,warning=FALSE,message=FALSE,fig.height=7,fig.width=8}
+multintersect(ClusterInternalArea,  ClusterNowakowskiSelected, universe = universe)
+```
+
+### Expression of the most relevant genes and loss of function genes
+
+If you also have the counts matrix of your samples and a design matrix specifying the metadata, you can check with the following heatmaps the expression patterns of the most relevant ASD genes and, in particular, you could check if you observe a downregulation pattern in your samples for the NDD genes that have the highest evidence of having a pathogenitc role because of a loss of function. 
+
+```{r,warning=FALSE,message=FALSE,fig.height=7,fig.width=8}
+load("Data/treatment.RData", verbose = T)
+SE <- SummarizedExperiment(assays = list(counts=as.matrix(counts)), colData= design)
+breaks <- c(-8,-3,seq(from=-2.5,to=2.5,length.out=24),3,8)
+sehm(se = SE, genes = SFARIgenes$score1, do.scale = T, sortRowsOn = NULL, anno_columns = c("BrainArea","EXPO"), main="SFARI gene score 1")
+```
+
+```{r,warning=FALSE,message=FALSE,fig.height=7,fig.width=8}
+SE <- SummarizedExperiment(assays = list(counts=as.matrix(counts)), colData= design)
+breaks <- c(-8,-3,seq(from=-2.5,to=2.5,length.out=24),3,8)
+LoF <- as.character(DDDneuro$gene.symbol[which(DDDneuro$mutation.consequence=="loss of function")])
+sehm(se = SE, genes = LoF, do.scale = T, sortRowsOn = NULL, anno_columns = c("BrainArea","EXPO"), show_rownames = F, main="Loss of function genes")
+```
+
+### Gene damage index
+
+Furthermore you can also look at the distribution of GDI scores for your genes of interest. Here an example we look at the violin plots for each cell population.
+
+```{r,warning=FALSE,message=FALSE,fig.height=7,fig.width=8}
+neurons <- GDI[which(GDI$Gene %in% ClusterInternalArea$Neurons),]
+neurons$Condition <- "neurons"
+radialglia <- GDI[which(GDI$Gene %in% ClusterInternalArea$RadialGlia),]
+radialglia$Condition <- "radial glia"
+choroid <- GDI[which(GDI$Gene %in% ClusterInternalArea$Choroid),]
+choroid$Condition <- "choroid"
+
+
+GDI <- rbind(neurons, radialglia,choroid)
+
+ggplot(GDI, aes(x=Condition, y=log(GDI))) + 
+  geom_violin(trim=FALSE) + stat_summary(fun.data="mean_sdl", mult=1, geom="crossbar", width=0.2 )
+
+ggplot(GDI, aes(x=Condition, y=log(GDI.Phred))) + 
+  geom_violin(trim=FALSE) + stat_summary(fun.data="mean_sdl", mult=1, geom="crossbar", width=0.2 )
 ```
 
 ### Data download and praparation
 
-For details on data preparation look [here](./DataPreparation/ASD/DataPreparation.html) for ASD genes
+For details on how the lists were selected, downloaded and curated, please have a look [here](./DataPreparation/ASD/DataPreparation.html) for all the NDD genes
 
 ***
-[here](./DataPreparation/Nowakowski_et_al/DataPreparation.html) for fetal brain single cell clusters
+[here](./DataPreparation/Nowakowski_et_al/DataPreparation.html) for fetal brain single cell populations
 
 ***
-[here](./DataPreparation/Lopez_et_al/DataPreparation.html) for cortical brain organoids single cell clusters
+[here](./DataPreparation/Lopez_et_al/DataPreparation.html) for cortical brain organoids single cell populations
