@@ -87,9 +87,26 @@ GDI indexes were downloaded from http://lab.rockefeller.edu/casanova/GDI
 GDI <- read.table("GDI_full_10282015.txt", header = T, sep = "\t")
 ```
 
+SingleCellASD genes were downloaded from Supplemntary Data 4 at https://science.sciencemag.org/content/suppl/2019/05/15/364.6441.685.DC1  selecting in particular the clusters of layers 2-3 neurons and protoplasmic astrocytes, to highlight the top cell specific differentially expressed genes, as shown in the paper https://science.sciencemag.org/content/364/6441/685.long
+
+```{r}
+scASDgenes <- read_excel("aav8130_Data-S4.xls")
+SingleCellASDgenes <- as.character(scASDgenes$`Gene name`)
+NeuronASDgenes<-as.character(scASDgenes$`Gene name`)[which(scASDgenes$`Cell type`=="L2/3")]
+AstrocyteASDgenes<-as.character(scASDgenes$`Gene name`)[which(scASDgenes$`Cell type`=="AST-PP")]
+```
+
+iPSYCH consortium is publishing the largest exome sequencing study of autism spectrum disorder (ASD) to date (n=35,584 total samples, 11,986 with ASD). I downloaded the risk genes identified from table S4 of the biorxiv publication at
+https://www.biorxiv.org/content/10.1101/484113v3.supplementary-material
+
+```{r}
+iPSYCH <- read_excel("media-5.xlsx", sheet = 3)
+iPSYCHgenes <- as.character(iPSYCH$gene)
+```
+
 I then save all the objects
 ```{r}
-ASD <- list(SFARI=SFARIgenesAll, AutismKB=AutismKBgenes, DDD=DDDneurogenes, MSSNG=MSSNGgenes, ASDsevere=ASDsevereGenes, ID=IDGenes, OMIM= NeuroOmimGenes)
-save(ASD, SFARI, SFARIgenes, AutismKB, DDDneuro, MSSNG, ASDsevere, ID, NeuroOmim, GDI, file = "../../Data/ASD.RData")
+ASD <- list(SFARI=SFARIgenesAll, AutismKB=AutismKBgenes, DDD=DDDneurogenes, MSSNG=MSSNGgenes, ASDsevere=ASDsevereGenes, ID=IDGenes, OMIM= NeuroOmimGenes, SingleCellASD=SingleCellASDgenes, NeuronASD=NeuronASDgenes, AstrocyteASD=AstrocyteASDgenes, iPSYCH=iPSYCHgenes)
+save(ASD, SFARI, SFARIgenes, AutismKB, DDDneuro, MSSNG, ASDsevere, ID, NeuroOmim, iPSYCH, GDI, file = "../../Data/ASD.RData")
 ```
 

@@ -1,10 +1,6 @@
 ---
 title: "Neurodevelopmental Disorders Genes"
 
-author:
-- name: Author Nicolò Caporale (nicolo.caporale@gmail.com), Giuseppe Testa lab http://www.testalab.eu/ 
-- name: the multintersect and sehm function were written by Pierre-Luc Germain (pl.germain@gmail.com)
-
 date: 'Date: `r format(Sys.Date(), "%B %d, %Y")`'
 output:
     html_document:
@@ -14,6 +10,12 @@ output:
         highlight: 'espresso'
         #code_folding: hide
 ---
+
+author:
+- name: Author Nicolò Caporale (nicolo.caporale@gmail.com), Giuseppe Testa lab http://www.testalab.eu/ 
+- name: the multintersect and sehm function were written by Pierre-Luc Germain (pl.germain@gmail.com)
+
+***
 
 If you have 1 or more lists of genes and you want to know how relevant they are in the context of neurodevelopmental disorders (NDD), here you can find a very simple pipeline that could help you.
 
@@ -44,6 +46,8 @@ MSSNG is..
 ASD severe 
 ID
 OMIM
+SingleCellASD
+iPSYCH
 
 ***
 
@@ -51,8 +55,7 @@ The only thing you need to start is 1 or more lists of genes organised in a R-ob
 
 ***
 
-As an example I take here the genes that define cell populations of different neural differentiation stages, from a single cell analysis of cortical brain organoids that we did in the lab. 
-https://www.biorxiv.org/content/10.1101/484741v2
+As an example I take here the genes that define cell populations of cortical brain organoids, that we differentiated in the lab and characterised with single cell analysis https://www.biorxiv.org/content/10.1101/484741v2
 
 ```{r,warning=FALSE,message=FALSE,fig.height=7,fig.width=8}
 multintersect(ClusterInternalArea, ASD, universe = universe)
