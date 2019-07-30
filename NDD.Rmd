@@ -11,15 +11,10 @@ output:
         #code_folding: hide
 ---
 
-author:
-- name: Author Nicolò Caporale (nicolo.caporale@gmail.com), Giuseppe Testa lab http://www.testalab.eu/ 
-- name: the multintersect and sehm function were written by Pierre-Luc Germain (pl.germain@gmail.com)
-
-***
 
 If you have 1 or more lists of genes and you want to know how relevant they are in the context of neurodevelopmental disorders (NDD), here you can find a very simple pipeline that could help you.
 
-This is a very simple analysis but it is **standing on the shoulders of giants**, as you can see from the references. Most of this work, indeed, is based on literature search, past experience with public dataset mining, manual selection and curation of the most relevant studies dealing with the genetics of neurodevelopmental disorders. It is by definition not comprehensive and it will need constant curation to be kept updated: so I ask you to contact me for constructive comments and suggestion to improve it..
+This is a basic analysis, but it is **standing on the shoulders of giants**, as you can see from the references. Most of this work, indeed, is based on literature search, past experience with public dataset mining, manual selection and curation of the most relevant studies dealing with the genetics of neurodevelopmental disorders. It is by definition not exhaustive and it needs constant curation to be kept updated: so I ask you to contact me for constructive comments and suggestions to improve it..
 
 
 ### Data loading
@@ -36,7 +31,8 @@ library(SummarizedExperiment)
 
 ### Overlaps with NDD genes
 
-You can take whatever lists of genes of your interest and intersect them with all the relevant NDD genes I assembled:
+You can take whatever lists of genes of your interest and intersect with all the relevant NDD genes I assembled:
+
 ***
 
 SFARI is ..
@@ -55,7 +51,11 @@ The only thing you need to start is 1 or more lists of genes organised in a R-ob
 
 ***
 
-As an example I take here the genes that define cell populations of cortical brain organoids, that we differentiated in the lab and characterised with single cell analysis https://www.biorxiv.org/content/10.1101/484741v2
+As an example I take here the genes defining the cell populations of cortical brain organoids, that we differentiated in the lab and characterised with single cell analysis https://www.biorxiv.org/content/10.1101/484741v2
+
+***
+
+You can hover with the mouse on the intersection of your interest to check the overlapping genes, the enrichement and the significance of the overlap, relative to your gene universe (usually all the genes that you use in your analysis after the initial filtering for not expressed genes) 
 
 ```{r,warning=FALSE,message=FALSE,fig.height=7,fig.width=8}
 multintersect(ClusterInternalArea, ASD, universe = universe)
@@ -139,3 +139,11 @@ For details on how the lists were selected, downloaded and curated, please have 
 
 ***
 [here](./DataPreparation/Lopez_et_al/DataPreparation.html) for cortical brain organoids single cell populations
+
+### Author
+
+- Nicolò Caporale (nicolo.caporale@gmail.com), Giuseppe Testa lab http://www.testalab.eu/ 
+
+***
+
+- the multintersect and sehm function were written by Pierre-Luc Germain (pl.germain@gmail.com)

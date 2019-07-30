@@ -19,7 +19,7 @@
 multintersect <- function(ll, ll2=NULL, universe=NULL, keyCol="log2Enrichment", keyWrite="overlap", addSetSize=TRUE, breakNames=NULL, margin=100, returnTables=FALSE){
   library(plotly)
   keyCol <- match.arg(keyCol, c("prob","enrichment","log2Enrichment","log10Prob","overlap","jaccard"))
-  keyWrite <- match.arg(keyWrite, c("prob","enrichment","log2Enrichment","log10Prob","overlap","jaccard"))
+  keyWrite <- match.arg(keyWrite, c("genes","prob","enrichment","log2Enrichment","log10Prob","overlap","jaccard"))
   if(is.null(ll2)){
     symm <- TRUE
     ll2 <- ll
@@ -44,12 +44,17 @@ multintersect <- function(ll, ll2=NULL, universe=NULL, keyCol="log2Enrichment", 
   m <- matrix(0,nrow=n,ncol=j)
   colnames(m) <- names(ll2)
   rownames(m) <- names(ll)
+  genes <- data.frame(m)
   prob <- m
   enr <- m
   jacc <- m
   for(i in 1:n){
     for(j in 1:length(ll2)){
       m[i,j] <- length(intersect(ll[[i]],ll2[[j]]))
+      
+      if (length(intersect(ll[[i]],ll2[[j]]))==0) genes[i,j] <- c("No genes")
+      else genes[i,j] <- I(list(as.character(intersect(ll[[i]],ll2[[j]]))))
+      
       if(names(ll)[i]==names(ll2)[j]){
         prob[i,j] <- NA
         enr[i,j] <- NA
@@ -76,7 +81,6 @@ multintersect <- function(ll, ll2=NULL, universe=NULL, keyCol="log2Enrichment", 
           ov <- sum(set1 %in% set2)
           phyper(max(0,ov-1), length(set1), universe-length(set1), length(set2), lower.tail=lower)
         }
-        
         enr[i,j] <- getEnrichment(ll[[i]],ll2[[j]],universe)
         prob[i,j] <- overlap.prob(ll[[i]],ll2[[j]],universe,lower=enr[i,j]<1)
         jacc[i,j] <- m[i,j]/length(unique(c(ll[[i]],ll2[[j]])))
@@ -91,6 +95,7 @@ multintersect <- function(ll, ll2=NULL, universe=NULL, keyCol="log2Enrichment", 
               overlap=m,
               jaccard=jacc)
   y <- switch(keyWrite,
+              genes=genes,
               prob=format(prob,digits=1),
               enrichment=format(enr,digits=2,trim=T,drop0trailing=T),
               log2Enrichment=round(log2(enr),1),
@@ -102,7 +107,7 @@ multintersect <- function(ll, ll2=NULL, universe=NULL, keyCol="log2Enrichment", 
   x[is.infinite(x) & x<0] <- min(x[which(!is.infinite(x))],na.rm=T)
   lab <- matrix(paste0( rep( gsub("\n"," ",row.names(x),fixed=T),ncol(x) ), "\n",
                         rep( gsub("\n"," ",colnames(x), fixed=T),each=nrow(x)), "\n",
-                        "overlap: ", as.numeric(m), "\n",
+                        "overlap: ", as.numeric(m), "\n", "genes: ", as.character(genes),"\n",
                         as.character(format(enr,digits=2,trim=T,drop0trailing=T)),"-fold enrichment \n",
                         "p~",as.character(format(prob,digits=2))
   ),nrow=nrow(x),ncol=ncol(x))
