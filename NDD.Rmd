@@ -157,7 +157,7 @@ In particular, you could check if you observe a downregulation pattern in your s
 SE <- SummarizedExperiment(assays = list(counts=as.matrix(counts)), colData= design)
 breaks <- c(-8,-3,seq(from=-2.5,to=2.5,length.out=24),3,8)
 LoF <- as.character(DecipherNeuro$gene.symbol[which(DecipherNeuro$mutation.consequence=="loss of function")])
-sehm(se = SE, genes = LoF, do.scale = T, sortRowsOn = NULL, anno_columns = c("BrainArea","EXPO2"), show_rownames = F, main="Loss of function genes")
+sehm(se = SE, genes = LoF, do.scale = T, sortRowsOn = NULL, anno_columns = c("BrainArea","EXPO"), show_rownames = F, main="Loss of function genes")
 ```
 
 ### Gene damage index
