@@ -44,7 +44,7 @@ multintersect <- function(ll, ll2=NULL, universe=NULL, keyCol="log2Enrichment", 
   m <- matrix(0,nrow=n,ncol=j)
   colnames(m) <- names(ll2)
   rownames(m) <- names(ll)
-  genes <- data.frame(m)
+  genes <- m
   prob <- m
   enr <- m
   jacc <- m
@@ -53,7 +53,7 @@ multintersect <- function(ll, ll2=NULL, universe=NULL, keyCol="log2Enrichment", 
       m[i,j] <- length(intersect(ll[[i]],ll2[[j]]))
       
       if (length(intersect(ll[[i]],ll2[[j]]))==0) genes[i,j] <- c("No genes")
-      else genes[i,j] <- I(list(as.character(intersect(ll[[i]],ll2[[j]]))))
+      else genes[i,j] <- paste(as.character(intersect(ll[[i]],ll2[[j]])),collapse = "_")
       
       if(names(ll)[i]==names(ll2)[j]){
         prob[i,j] <- NA

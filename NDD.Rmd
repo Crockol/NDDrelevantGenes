@@ -1,7 +1,5 @@
 ---
 title: "Neurodevelopmental Disorders Genes"
-
-date: 'Date: `r format(Sys.Date(), "%B %d, %Y")`'
 output:
     html_document:
         toc: true
@@ -14,8 +12,7 @@ output:
 
 If you have 1 or more lists of genes and you want to know how relevant they are in the context of neurodevelopmental disorders (NDD), here you can find a very simple pipeline that could help you.
 
-This is a basic analysis, but it is **standing on the shoulders of giants**, as you can see from the references. Most of this work, indeed, is based on literature search, past experience with public dataset mining, manual selection and curation of the most relevant studies dealing with the genetics of neurodevelopmental disorders. It is by definition not exhaustive and it needs constant curation to be kept updated: so I ask you to contact me for constructive comments and suggestions to improve it..
-
+This is a basic analysis, but it is **standing on the shoulders of giants**. Most of this work, indeed, is based on literature search, past experience with public dataset mining, manual selection and curation of the most relevant studies dealing with the genetics of neurodevelopmental disorders. It is by definition not exhaustive and it needs constant curation to be kept updated: so I ask you to contact us for constructive comments and suggestions to improve it..
 
 ### Data loading
 
@@ -31,19 +28,82 @@ library(SummarizedExperiment)
 
 ### Overlaps with NDD genes
 
-You can take whatever lists of genes of your interest and intersect with all the relevant NDD genes I assembled:
+You can take whatever lists of genes of your interest and intersect with all the relevant NDD genes assembled here:
 
 ***
 
-SFARI is ..
-AutismKB is..
-DDD is ..
-MSSNG is..
-ASD severe 
-ID
-OMIM
-SingleCellASD
-iPSYCH
+"SFARI Gene is an evolving online database designed to permit quick entrée into the genetics of autism, and to help researchers track the ever-expanding genetic risk factors that emerge in the literature.
+The site provides several ways of accessing data on autism risk genes:
+Human Gene Module lists 1,089 genes implicated in autism, with annotations and links to published papers.
+Gene Scoring Module offers critical evaluation of the strength of the evidence for each gene’s association with autism. These gene scores are increasingly being used in the published literature3-11. 91 high-ranking autism risk genes (see Table 1) have so far been identified.
+Copy Number Variant (CNV) Module lists 2,291 CNV loci reported in individuals with autism.
+Animal Model Module lists 1,648 mouse lines and 367 rat lines, including genetic models, inbred lines, models induced by biological or chemical agents and rescue lines. Drosophila and zebrafish models have recently been added to the database, including 58 genes for Drosophila and 30 genes for zebrafish.
+Protein Interaction Network (PIN) Module curates all protein-protein and protein-nucleic acid interactions reported in the literature."
+https://gene.sfari.org/
+
+***
+
+"AutismKB is a knowledgebase for the genetic evidence of ASD. The current version contains 1,379 genes (99 syndromic autism related genes and 1,280 non-syndromic autism related genes), 5,420 Copy Number Variations (CNVs)/Structural Variations (SVs), 11,669 single-nucleotide variations (SNVs)/insertions and deletions (InDels) and 172 linkage regions associated with ASD by one or more of the following nine categories of evidences/studies:
+Genome-Wide Association Studies (GWAS);
+Genome-Wide Copy Number Variation/Structure Variation (CNV/SV) Studies;
+Linkage Studies;
+Low-Scale Genetic Association Studies;
+Expression Profilings;
+Next Generation Sequencing (NGS) de novo Mutation Studies;
+NGS Mosaic Studies;
+NGS Other Studies;
+Low-Scale Gene Studies.
+Based on a scoring and ranking system (More), 30 syndromic autism related genes and 198 non-syndromic autism related genes (228 genes in total) were designated as having high confidence (Core Dataset)."
+http://db.cbi.pku.edu.cn/autismkb_v2/index.php
+
+***
+
+"DECIPHER (DatabasE of genomiC varIation and Phenotype in Humans using Ensembl Resources) is an interactive web-based database which incorporates a suite of tools designed to aid the interpretation of genomic variants.
+DECIPHER enhances clinical diagnosis by retrieving information from a variety of bioinformatics resources relevant to the variant found in the patient. The patient’s variant is displayed in the context of both normal variation and pathogenic variation reported at that locus thereby facilitating interpretation.
+Contributing to the DECIPHER database is an international community of academic departments of clinical genetics and rare disease genomics now numbering more than 250 centres and having uploaded more than 27,000 cases. Each contributing centre has a nominated rare disease clinician or clinical geneticist who is responsible for overseeing data entry and membership for their centre. DECIPHER enables a flexible approach to data-sharing. Each centre maintains control of its own patient data (which are password protected within the centre’s own DECIPHER project) until consent is given to share the data with chosen parties in a collaborative group or to allow anonymous genomic and phenotypic data to become freely viewable within Ensembl and other genome browsers (see below). Once data are shared, consortium members are able to gain access to the patient report and contact each other to discuss patients of mutual interest."
+https://decipher.sanger.ac.uk/about#overview
+
+***
+
+"MSSNG is a groundbreaking collaboration between Google and Autism Speaks to create one of the world's largest genomic database on autism.
+With our goal of sequencing the DNA of 10,000 families affected by autism, MSSNG will help answer the many questions we still have about the disorder.
+Thanks to the Google Cloud, this vast sea of information will be made accessible for free to researchers. The greatest minds in science from around the world will be able to study trillions of data points in one single database. Already, MSSNG has led to new discoveries about autism and its associated health conditions. With 10,000 or more whole genomes and the help of the global science community, we can far outreach what has been accomplished so far. MSSNG will identify many subtypes of autism, with the goal of developing more personalized and effective treatments. For questions about MSSNG, please contact us at info@mss.ng."
+https://www.mss.ng/
+
+***
+
+"iPSYCH is studying five specific mental disorders; autism, ADHD, schizophrenia, bipolar disorder and depression. All disorders are associated with major human and societal costs all over the world. The iPSYCH project will study these disorders from many different angles, ranging from genes and cells to population studies, from fetus to adult, from cause to symptoms of the disorder, and this knowledge will be combined in new ways across scientific fields.
+The main goals are to identify the causes of these disorders by studying the genetic and environmental factors and thereby find new targets for treatment. The perspective is to offer better and more personalized treatment, providing a better life for each individual patient with the disorder - and perhaps even ways to prevent the development of the disorder in some cases.
+"The Lundbeck Foundation Initiative for Integrative Psychiatric Research"- iPSYCH - has received its second major grant from the Lundbeck Foundation - DKK 120 million - for a new 3-year period starting from 1 March 2015. This means that a number of leading researchers working within the field of psychiatry in Denmark, and their national and international collaborators, can continue their research in this field."
+https://ipsych.au.dk/about-ipsych/
+
+***
+
+"The gene damage index (GDI) is the accumulated mutational damage of each human gene in healthy human population, based on the 1000 Genomes Project database (Phase 3) gene variations of healthy individuals and of the CADD score for calculating impact. We have shown that highly damaged human genes are unlikely to be disease-causing. GDI is very effective to filter out variants harbored in highly damaged (high GDI) genes that are unlikely to be disease-causing."
+http://lab.rockefeller.edu/casanova/GDI
+
+***
+
+"OMIM®, Online Mendelian Inheritance in Man®. OMIM is a comprehensive, authoritative compendium of human genes and genetic phenotypes that is freely available and updated daily. The full-text, referenced overviews in OMIM contain information on all known mendelian disorders and over 15,000 genes. OMIM focuses on the relationship between phenotype and genotype. It is updated daily, and the entries contain copious links to other genetics resources.
+This database was initiated in the early 1960s by Dr. Victor A. McKusick as a catalog of mendelian traits and disorders, entitled Mendelian Inheritance in Man (MIM). Twelve book editions of MIM were published between 1966 and 1998. The online version, OMIM, was created in 1985 by a collaboration between the National Library of Medicine and the William H. Welch Medical Library at Johns Hopkins. It was made generally available on the internet starting in 1987. In 1995, OMIM was developed for the World Wide Web by NCBI, the National Center for Biotechnology Information.
+OMIM is authored and edited at the McKusick-Nathans Institute of Genetic Medicine, Johns Hopkins University School of Medicine, under the direction of Dr. Ada Hamosh."
+https://www.omim.org/
+
+***
+
+"ASD severe comes from a recent study aimed at maximizing the discovery of potentially pathogenic variants to better understand the diagnostic utility of genome sequencing (GS) and to assess how the presence of multiple risk events might affect the phenotypic severity in autism spectrum disorders (ASD). In conclusion
+the study demonstrates the diagnostic utility of GS, especially for multiple risk variants that contribute to the phenotypic severity, shows the genetic heterogeneity in multiplex families, and provides evidence for new genes for follow up."
+https://www.nature.com/articles/s41436-018-0380-2
+
+***
+
+"ID comes from a recent study that sequenced 208 candidate genes from >11,730 cases and >2,867 controls, identifying 91 genes, including 38 new NDD genes."
+https://www.nature.com/articles/ng.3792
+
+***
+
+"SingleCellASD comes from a recent study that carried out single-nucleus RNA sequencing of cortical tissue from patients with autism to identify autism-associated transcriptomic changes in specific cell types. They generated 104,559 single-nuclei gene expression profiles—52,556 from control subjects and 52,003 from ASD patients."
+https://science.sciencemag.org/content/364/6441/685.long
 
 ***
 
@@ -51,31 +111,20 @@ The only thing you need to start is 1 or more lists of genes organised in a R-ob
 
 ***
 
-As an example I take here the genes defining the cell populations of cortical brain organoids, that we differentiated in the lab and characterised with single cell analysis https://www.biorxiv.org/content/10.1101/484741v2
+As an example here you find the genes defining the cell populations of cortical brain organoids, that we differentiated in the lab and characterised with single cell analysis https://www.biorxiv.org/content/10.1101/484741v2
 
 ***
 
-You can hover with the mouse on the intersection of your interest to check the overlapping genes, the enrichement and the significance of the overlap, relative to your gene universe (usually all the genes that you use in your analysis after the initial filtering for not expressed genes) 
+You can hover with the mouse on the intersection of your interest to check which are the overlapping genes, the enrichement and the significance of the overlap, relative to your gene universe (usually all the genes that you use in your analysis after the initial filtering for not expressed genes) 
 
 ```{r,warning=FALSE,message=FALSE,fig.height=7,fig.width=8}
 multintersect(ClusterInternalArea, ASD, universe = universe)
 ```
 
-You can then check which are the specific genes from the overlap of your interest.
-
-***
-
-As an exemple here I check which of the genes defining the neuronal population are also in the list of SFARI genes.
-I also check which of the genes defining the choroid population are also in the list of OMIM genes.
-
-```{r,warning=FALSE,message=FALSE,fig.height=7,fig.width=8}
-intersect(ASD$SFARI, ClusterInternalArea$Neurons)
-intersect(ASD$OMIM, ClusterInternalArea$Choroid)
-```
 
 ### Overlaps with SFARI genes
 
-As a next step you can intersect your lists with the SFARI genes stratified for the strenght of association with autism.
+As a next step you can intersect your lists with the SFARI genes stratified for their strenght of association with autism.
 
 ```{r,warning=FALSE,message=FALSE,fig.height=7,fig.width=8}
 multintersect(ClusterInternalArea, SFARIgenes, universe = universe)
@@ -83,16 +132,16 @@ multintersect(ClusterInternalArea, SFARIgenes, universe = universe)
 
 ### Overlap with neurodevelopmental cell populations
 
-Since you are working with neurodevelopmental genes, you might be interested in checking the overlap of your genes with the ones that define the developmental population in the reference dataset of fetal brain single cells profiles.
+Since you are working with neurodevelopmental genes, you might be interested in checking the overlap of your genes with the ones that define human fetal brain developmental population (reference single cell dataset at https://cells.ucsc.edu/?ds=cortex-dev).
 
 
 ```{r,warning=FALSE,message=FALSE,fig.height=7,fig.width=8}
 multintersect(ClusterInternalArea,  ClusterNowakowskiSelected, universe = universe)
 ```
 
-### Expression of the most relevant genes and loss of function genes
+### Expression of the most relevant ASD genes
 
-If you also have the counts matrix of your samples and a design matrix specifying the metadata, you can check with the following heatmaps the expression patterns of the most relevant ASD genes and, in particular, you could check if you observe a downregulation pattern in your samples for the NDD genes that have the highest evidence of having a pathogenitc role because of a loss of function. 
+If you also have the counts matrix of your samples and a matadata matrix, you can check with the following heatmaps the expression patterns of the most relevant ASD genes.
 
 ```{r,warning=FALSE,message=FALSE,fig.height=7,fig.width=8}
 load("Data/treatment.RData", verbose = T)
@@ -101,16 +150,18 @@ breaks <- c(-8,-3,seq(from=-2.5,to=2.5,length.out=24),3,8)
 sehm(se = SE, genes = SFARIgenes$score1, do.scale = T, sortRowsOn = NULL, anno_columns = c("BrainArea","EXPO"), main="SFARI gene score 1")
 ```
 
+### Loss of function genes
+In particular, you could check if you observe a downregulation pattern in your samples for the NDD genes that have the highest evidence of having a pathogenitc role because of a loss of function.
 ```{r,warning=FALSE,message=FALSE,fig.height=7,fig.width=8}
 SE <- SummarizedExperiment(assays = list(counts=as.matrix(counts)), colData= design)
 breaks <- c(-8,-3,seq(from=-2.5,to=2.5,length.out=24),3,8)
-LoF <- as.character(DDDneuro$gene.symbol[which(DDDneuro$mutation.consequence=="loss of function")])
+LoF <- as.character(DecipherNeuro$gene.symbol[which(DecipherNeuro$mutation.consequence=="loss of function")])
 sehm(se = SE, genes = LoF, do.scale = T, sortRowsOn = NULL, anno_columns = c("BrainArea","EXPO"), show_rownames = F, main="Loss of function genes")
 ```
 
 ### Gene damage index
 
-Furthermore you can also look at the distribution of GDI scores for your genes of interest. Here an example we look at the violin plots for each cell population.
+Furthermore you can also look at the distribution of GDI scores for your genes of interest. Here for example we look at the violin plots for each of our cell population.
 
 ```{r,warning=FALSE,message=FALSE,fig.height=7,fig.width=8}
 neurons <- GDI[which(GDI$Gene %in% ClusterInternalArea$Neurons),]
@@ -119,13 +170,10 @@ radialglia <- GDI[which(GDI$Gene %in% ClusterInternalArea$RadialGlia),]
 radialglia$Condition <- "radial glia"
 choroid <- GDI[which(GDI$Gene %in% ClusterInternalArea$Choroid),]
 choroid$Condition <- "choroid"
-
-
 GDI <- rbind(neurons, radialglia,choroid)
 
-ggplot(GDI, aes(x=Condition, y=log(GDI))) + 
-  geom_violin(trim=FALSE) + stat_summary(fun.data="mean_sdl", mult=1, geom="crossbar", width=0.2 )
-
+#ggplot(GDI, aes(x=Condition, y=log(GDI))) + 
+ # geom_violin(trim=FALSE) + stat_summary(fun.data="mean_sdl", mult=1, geom="crossbar", width=0.2 )
 ggplot(GDI, aes(x=Condition, y=log(GDI.Phred))) + 
   geom_violin(trim=FALSE) + stat_summary(fun.data="mean_sdl", mult=1, geom="crossbar", width=0.2 )
 ```
@@ -135,15 +183,20 @@ ggplot(GDI, aes(x=Condition, y=log(GDI.Phred))) +
 For details on how the lists were selected, downloaded and curated, please have a look [here](./DataPreparation/ASD/DataPreparation.html) for all the NDD genes
 
 ***
+
 [here](./DataPreparation/Nowakowski_et_al/DataPreparation.html) for fetal brain single cell populations
 
 ***
+
 [here](./DataPreparation/Lopez_et_al/DataPreparation.html) for cortical brain organoids single cell populations
 
 ### Author
 
-- Nicolò Caporale (nicolo.caporale@gmail.com), Giuseppe Testa lab http://www.testalab.eu/ 
+Nicolò Caporale (nicolo.caporale@gmail.com), Giuseppe Testa lab http://www.testalab.eu/ 
 
 ***
 
-- the multintersect and sehm function were written by Pierre-Luc Germain (pl.germain@gmail.com)
+minor edit to the multintersect and sehm function that were written by Pierre-Luc Germain (pl.germain@gmail.com)
+
+
+date: 'Date: `r format(Sys.Date(), "%B %d, %Y")`'

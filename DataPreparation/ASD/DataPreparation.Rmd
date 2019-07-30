@@ -36,11 +36,11 @@ colnames(AutismKB) <- c("Gene Symbol",	"Entrez ID",	"Genome-Wide Association Stu
 AutismKBgenes<- as.character(AutismKB$`Gene Symbol`)
 ```
 
-DDD genes were downloaded from https://decipher.sanger.ac.uk/about#downloads/data
+Decipher genes were downloaded from https://decipher.sanger.ac.uk/about#downloads/data
 ```{r}
-DDD <- read.csv("DDG2P_16_7_2019.csv")
-DDDneuro <- DDD[c(grep("autism", DDD$disease.name,ignore.case = T),grep("intellectual", DDD$disease.name,ignore.case = T),grep("neurodevelopm", DDD$disease.name, ignore.case = T)),]
-DDDneurogenes <- as.character(DDDneuro$gene.symbol)
+Decipher <- read.csv("DDG2P_16_7_2019.csv")
+DecipherNeuro <- Decipher[c(grep("autism", Decipher$disease.name,ignore.case = T),grep("intellectual", Decipher$disease.name,ignore.case = T),grep("neurodevelopm", Decipher$disease.name, ignore.case = T)),]
+DecipherNeurogenes <- as.character(DecipherNeuro$gene.symbol)
 ```
 
 MSSNG genes were downloaded from https://www.ncbi.nlm.nih.gov/pubmed/28263302 Supplementary Table 5
@@ -80,6 +80,10 @@ NeuroOmim <- morbidmap[c(grep("autism", morbidmap$Phenotype,ignore.case = T),gre
 NeuroOmimGenes <- as.character(morbidmap$`Gene Symbols`[c(grep("autism", morbidmap$Phenotype,ignore.case = T),grep("intellectual", morbidmap$Phenotype,ignore.case = T),grep("neurodevelopm", morbidmap$Phenotype,ignore.case = T))])
 NeuroOmimGenes <- strsplit(NeuroOmimGenes,split = ',')
 NeuroOmimGenes <- unique(unlist(NeuroOmimGenes))
+
+OmimGenes <- as.character(morbidmap$`Gene Symbols`)
+OmimGenes <- strsplit(OmimGenes,split = ',')
+OmimGenes <- unique(unlist(OmimGenes))
 ```
 
 GDI indexes were downloaded from http://lab.rockefeller.edu/casanova/GDI
@@ -106,7 +110,7 @@ iPSYCHgenes <- as.character(iPSYCH$gene)
 
 I then save all the objects
 ```{r}
-ASD <- list(SFARI=SFARIgenesAll, AutismKB=AutismKBgenes, DDD=DDDneurogenes, MSSNG=MSSNGgenes, ASDsevere=ASDsevereGenes, ID=IDGenes, OMIM= NeuroOmimGenes, SingleCellASD=SingleCellASDgenes, NeuronASD=NeuronASDgenes, AstrocyteASD=AstrocyteASDgenes, iPSYCH=iPSYCHgenes)
-save(ASD, SFARI, SFARIgenes, AutismKB, DDDneuro, MSSNG, ASDsevere, ID, NeuroOmim, iPSYCH, GDI, file = "../../Data/ASD.RData")
+ASD <- list(SFARI=SFARIgenesAll, AutismKB=AutismKBgenes, Decipher=DecipherNeurogenes, MSSNG=MSSNGgenes, iPSYCH=iPSYCHgenes , NeuroOMIM= NeuroOmimGenes, OMIM= OmimGenes, ASDsevere=ASDsevereGenes, ID=IDGenes, SingleCellASD=SingleCellASDgenes, NeuronASD=NeuronASDgenes, AstrocyteASD=AstrocyteASDgenes)
+save(ASD, SFARI, SFARIgenes, AutismKB, DecipherNeuro, MSSNG, ASDsevere, ID, NeuroOmim, iPSYCH, GDI, file = "../../Data/ASD.RData")
 ```
 
