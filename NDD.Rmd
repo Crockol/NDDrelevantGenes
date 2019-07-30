@@ -4,9 +4,10 @@ output:
     html_document:
         toc: true
         toc_float: true
+        collapsed: true
         theme: 'simplex'
         highlight: 'espresso'
-        #code_folding: hide
+        code_folding: hide
 ---
 
 
@@ -28,10 +29,25 @@ library(SummarizedExperiment)
 
 ### Overlaps with NDD genes
 
-You can take whatever lists of genes of your interest and intersect with all the relevant NDD genes assembled here:
+You can take whatever lists of genes of your interest and intersect with all the relevant NDD genes assembled here.
 
 ***
 
+The only thing you need to start is 1 or more lists of genes organised in a R-object of class "list".
+
+***
+
+As an example here you find the genes defining the cell populations of cortical brain organoids, that we differentiated in the lab and characterised with single cell analysis https://www.biorxiv.org/content/10.1101/484741v2
+
+***
+
+You can hover with the mouse on the intersection of your interest to check which are the overlapping genes, the enrichement and the significance of the overlap, relative to your gene universe (usually all the genes that you use in your analysis after the initial filtering for not expressed genes) 
+
+```{r,warning=FALSE,message=FALSE,fig.height=7,fig.width=8}
+multintersect(ClusterInternalArea, ASD, universe = universe)
+```
+
+### NDD dataset description
 "SFARI Gene is an evolving online database designed to permit quick entrée into the genetics of autism, and to help researchers track the ever-expanding genetic risk factors that emerge in the literature.
 The site provides several ways of accessing data on autism risk genes:
 Human Gene Module lists 1,089 genes implicated in autism, with annotations and links to published papers.
@@ -107,21 +123,6 @@ https://science.sciencemag.org/content/364/6441/685.long
 
 ***
 
-The only thing you need to start is 1 or more lists of genes organised in a R-object of class "list".
-
-***
-
-As an example here you find the genes defining the cell populations of cortical brain organoids, that we differentiated in the lab and characterised with single cell analysis https://www.biorxiv.org/content/10.1101/484741v2
-
-***
-
-You can hover with the mouse on the intersection of your interest to check which are the overlapping genes, the enrichement and the significance of the overlap, relative to your gene universe (usually all the genes that you use in your analysis after the initial filtering for not expressed genes) 
-
-```{r,warning=FALSE,message=FALSE,fig.height=7,fig.width=8}
-multintersect(ClusterInternalArea, ASD, universe = universe)
-```
-
-
 ### Overlaps with SFARI genes
 
 As a next step you can intersect your lists with the SFARI genes stratified for their strenght of association with autism.
@@ -144,7 +145,7 @@ multintersect(ClusterInternalArea,  ClusterNowakowskiSelected, universe = univer
 If you also have the counts matrix of your samples and a matadata matrix, you can check with the following heatmaps the expression patterns of the most relevant ASD genes.
 
 ```{r,warning=FALSE,message=FALSE,fig.height=7,fig.width=8}
-load("Data/treatment.RData", verbose = T)
+load("Data/treatment.RData")
 SE <- SummarizedExperiment(assays = list(counts=as.matrix(counts)), colData= design)
 breaks <- c(-8,-3,seq(from=-2.5,to=2.5,length.out=24),3,8)
 sehm(se = SE, genes = SFARIgenes$score1, do.scale = T, sortRowsOn = NULL, anno_columns = c("BrainArea","EXPO"), main="SFARI gene score 1")
@@ -156,7 +157,7 @@ In particular, you could check if you observe a downregulation pattern in your s
 SE <- SummarizedExperiment(assays = list(counts=as.matrix(counts)), colData= design)
 breaks <- c(-8,-3,seq(from=-2.5,to=2.5,length.out=24),3,8)
 LoF <- as.character(DecipherNeuro$gene.symbol[which(DecipherNeuro$mutation.consequence=="loss of function")])
-sehm(se = SE, genes = LoF, do.scale = T, sortRowsOn = NULL, anno_columns = c("BrainArea","EXPO"), show_rownames = F, main="Loss of function genes")
+sehm(se = SE, genes = LoF, do.scale = T, sortRowsOn = NULL, anno_columns = c("BrainArea","EXPO2"), show_rownames = F, main="Loss of function genes")
 ```
 
 ### Gene damage index

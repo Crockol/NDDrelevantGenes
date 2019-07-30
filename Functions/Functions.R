@@ -200,7 +200,8 @@ sehm <- function( se, genes=NULL, do.scale=FALSE, assayName="logcpm", sortRowsOn
   
   an <- as.data.frame(colData(se))
   an <- an[,intersect(colnames(an), anno_columns),drop=T]
-  if(ncol(an)==0){
+  
+    if(ncol(an)==0){
     an <- NULL
   }else{
     for(i in colnames(an)){
@@ -233,5 +234,5 @@ sehm <- function( se, genes=NULL, do.scale=FALSE, assayName="logcpm", sortRowsOn
 }
 
 annoColors <- function(){
-  list(EXPO=c(CNT="#0000FF", DMSO="#2900D5", "0.1X"="#5500AA", "1X"="#7E0080", "10X"="#AA0054", "100X"="#D3002B", "1000X"="#FF0000", "BPA0.04X"="#117733", BPA1X="#999933", VITC="lightgrey", T3="yellow", T3LOW="#FFFF33", T3MixN="orange",T3_MixNLOW="#FFD700"))
+  list(EXPO=c(CNT="#0000FF", T3="yellow"))
 }
