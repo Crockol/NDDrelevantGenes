@@ -1,0 +1,80 @@
+---
+date: 'Date: `r format(Sys.Date(), "%B %d, %Y")`'
+output:
+    html_document:
+        toc: true
+        toc_float: true
+        theme: 'simplex'
+        highlight: 'espresso'
+        #code_folding: hide
+---
+
+
+To go back to the main page go [here](../../NDD.html)
+
+
+## Data preparation
+
+OrganoidsAtlas gene signatures were dowloaded from https://cells.ucsc.edu/?ds=organoidatlas and then imported:
+
+```{r}
+library(data.table)
+Astrocytes = fread("../OrganoidsAtlas/AS1.tsv.gz")
+Astrocytes2 = fread("../OrganoidsAtlas/AS2.tsv.gz")
+Astrocytes3 = fread("../OrganoidsAtlas/AS3.tsv.gz")
+CiliumCluster = fread("../OrganoidsAtlas/CBC.tsv.gz")
+BMPcluster = fread("../OrganoidsAtlas/BRC.tsv.gz")
+Glut = fread("../OrganoidsAtlas/CN1.tsv.gz")
+Glut2 = fread("../OrganoidsAtlas/CN2.tsv.gz")
+Glut3 = fread("../OrganoidsAtlas/CN3.tsv.gz")
+Glut4 = fread("../OrganoidsAtlas/CN4.tsv.gz")
+Glut5 = fread("../OrganoidsAtlas/CN5.tsv.gz")
+UndefinedGlia = fread("../OrganoidsAtlas/GPC.tsv.gz")
+Interneurons = fread("../OrganoidsAtlas/IN.tsv.gz")
+Mesoderm = fread("../OrganoidsAtlas/ME.tsv.gz")
+Progenitors = fread("../OrganoidsAtlas/NEC1.tsv.gz")
+Progenitors2 = fread("../OrganoidsAtlas/NEC2.tsv.gz")
+Progenitors3 = fread("../OrganoidsAtlas/NEC3.tsv.gz")
+Progenitors4 = fread("../OrganoidsAtlas/NEC4.tsv.gz")
+EarlyNeurons = fread("../OrganoidsAtlas/Neuron.tsv.gz")
+Oligodendrocytes = fread("../OrganoidsAtlas/OPCOL.tsv.gz")
+ProteoglicanCluster = fread("../OrganoidsAtlas/PGC1.tsv.gz")
+ProteoglicanCluster2 = fread("../OrganoidsAtlas/PGC2.tsv.gz")
+UPRcluster = fread("../OrganoidsAtlas/UPRC1.tsv.gz")
+UPRcluster2 = fread("../OrganoidsAtlas/UPRC2.tsv.gz")
+
+OrganoidsAtlas <- list()
+
+OrganoidsAtlas$Progenitors <- unique(union(Progenitors$symbol,union(Progenitors2$symbol,union(Progenitors3$symbol,Progenitors4$symbol))))
+
+OrganoidsAtlas$EarlyNeurons <- unique(EarlyNeurons$symbol)
+
+OrganoidsAtlas$GlutamatergicNeurons <- unique(union(Glut$symbol,union(Glut2$symbol,union(Glut3$symbol,union(Glut4$symbol, Glut5$symbol)))))
+
+OrganoidsAtlas$Astrocytes <- unique(union(Astrocytes$symbol,union(Astrocytes2$symbol, Astrocytes3$symbol)))
+
+OrganoidsAtlas$Mesoderm <- unique(Mesoderm$symbol)
+
+OrganoidsAtlas$ProteoglicanCluster <- unique(union(ProteoglicanCluster$symbol,ProteoglicanCluster2$symbol))
+
+OrganoidsAtlas$UPRcluster <- unique(union(UPRcluster$symbol,UPRcluster2$symbol))
+
+OrganoidsAtlas$Mesoderm <- unique(Mesoderm$symbol)
+
+OrganoidsAtlas$Oligodendrocytes <- unique(Oligodendrocytes$symbol)
+
+OrganoidsAtlas$UndefinedGlia <- unique(UndefinedGlia$symbol)
+
+OrganoidsAtlas$CiliumCluster <- unique(CiliumCluster$symbol)
+
+OrganoidsAtlas$BMPcluster <- unique(BMPcluster$symbol)
+
+save(OrganoidsAtlas, file = "../../Data/OrganoidsAtlas.RData")
+```
+
+
+
+
+
+
+

@@ -23,6 +23,7 @@ load("Data/Nowakowski_et_al.RData")
 load("Data/Organoids.RData")
 load("Data/universe.RData")
 load("Data/ASD.RData")
+load("Data/OrganoidsAtlas.RData")
 library(SummarizedExperiment)
 ```
 
@@ -138,6 +139,13 @@ Since you are working with neurodevelopmental genes, you might be interested in 
 
 ```{r,warning=FALSE,message=FALSE,fig.height=7,fig.width=8}
 multintersect(ClusterInternalArea,  ClusterNowakowskiSelected, universe = universe)
+```
+
+and with cell populations defined in the Organoids atlas in https://www.sciencedirect.com/science/article/pii/S221112472030053X
+
+
+```{r,warning=FALSE,message=FALSE,fig.height=7,fig.width=8}
+multintersect(ClusterInternalArea,  OrganoidsAtlas, universe = universe)
 ```
 
 ### Expression of the most relevant ASD genes
