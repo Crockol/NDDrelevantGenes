@@ -51,6 +51,8 @@ OrganoidsAtlas$EarlyNeurons <- unique(EarlyNeurons$symbol)
 
 OrganoidsAtlas$GlutamatergicNeurons <- unique(union(Glut$symbol,union(Glut2$symbol,union(Glut3$symbol,union(Glut4$symbol, Glut5$symbol)))))
 
+OrganoidsAtlas$Interneurons <- unique(Interneurons$symbol)
+
 OrganoidsAtlas$Astrocytes <- unique(union(Astrocytes$symbol,union(Astrocytes2$symbol, Astrocytes3$symbol)))
 
 OrganoidsAtlas$Mesoderm <- unique(Mesoderm$symbol)
