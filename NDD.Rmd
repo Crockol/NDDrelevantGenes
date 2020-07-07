@@ -24,6 +24,7 @@ load("Data/Organoids.RData")
 load("Data/universe.RData")
 load("Data/ASD.RData")
 load("Data/OrganoidsAtlas.RData")
+load("Data/CortexAreas.RData")
 library(SummarizedExperiment)
 ```
 
@@ -146,6 +147,13 @@ and with cell populations defined in the Organoids atlas in https://www.scienced
 
 ```{r,warning=FALSE,message=FALSE,fig.height=7,fig.width=8}
 multintersect(ClusterInternalArea,  OrganoidsAtlas, universe = universe)
+```
+
+and with cell populations specific for different brain cortex areas, defined in https://www.nature.com/articles/s41586-020-1962-0
+
+
+```{r,warning=FALSE,message=FALSE,fig.height=7,fig.width=8}
+multintersect(ClusterInternalArea,  CortexAreas, universe = universe)
 ```
 
 ### Expression of the most relevant ASD genes

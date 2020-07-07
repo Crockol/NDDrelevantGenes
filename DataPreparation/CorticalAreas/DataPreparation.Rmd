@@ -1,0 +1,40 @@
+---
+title: "Neurodevelopmental Disorders Genes"
+
+author:
+- name: Data analysis for this paper were carried out by Emanuele Villa (carloemanuele.villa@outlook.com) and Cristina Cheroni (cristina.cheroni@ieo.it)
+
+date: 'Date: `r format(Sys.Date(), "%B %d, %Y")`'
+output:
+    html_document:
+        #toc: true
+        #toc_float: true
+        theme: 'simplex'
+        highlight: 'espresso'
+        #code_folding: hide
+---
+
+
+To go back to the main page go [here](../../NDD.html)
+
+You can find the original paper at
+
+## Data preparation
+List of gene signatures for human cortex areas. Downloaded from https://www.nature.com/articles/s41586-020-1962-0#Fig1
+Supplementary Table
+
+```{r}
+library(readxl)
+Data <- read_excel("41586_2020_1962_MOESM3_ESM.xlsx", sheet = 9)
+
+CortexAreas <- list()
+CortexAreas$hippocampus <- Data$Gene[which(Data$Area=="hippocampus")]
+CortexAreas$motor <- Data$Gene[which(Data$Area=="motor")]
+CortexAreas$parietal <- Data$Gene[which(Data$Area=="parietal")]
+CortexAreas$PFC <- Data$Gene[which(Data$Area=="PFC")]
+CortexAreas$somato <- Data$Gene[which(Data$Area=="somato")]
+CortexAreas$temporal <- Data$Gene[which(Data$Area=="temporal")]
+CortexAreas$V1 <- Data$Gene[which(Data$Area=="V1")]
+
+save(CortexAreas, file = "../../Data/CortexAreas.RData")
+```
